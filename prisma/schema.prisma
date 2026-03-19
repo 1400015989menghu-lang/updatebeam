@@ -1,0 +1,339 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// ==================== User & Auth ====================
+
+model User {
+  id         String   @id @default(cuid())
+  email      String   @unique
+  name       String
+  password   String
+  role       String   @default("STAFF")
+  department String?
+  isActive   Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  ownedCases    Case[]          @relation("CaseOwner")
+  reviews       ReviewItem[]    @relation("Reviewer")
+  approvals     Approval[]
+  auditLogs     AuditLog[]
+  sentReminders ReminderEvent[] @relation("ReminderSender")
+  caseNotes     CaseNote[]
+}
+
+// ==================== Client ====================
+
+model Client {
+  id                String    @id @default(cuid())
+  name              String
+  businessType      String?
+  registrationNo    String?
+  incorporationDate DateTime?
+  anniversaryDate   DateTime?
+  financialYearEnd  DateTime?
+  taxAgentCode      String?
+  isActive          Boolean   @default(true)
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  contacts    ClientContact[]
+  engagements Engagement[]
+  cases       Case[]
+}
+
+model ClientContact {
+  id        String   @id @default(cuid())
+  clientId  String
+  client    Client   @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  name      String
+  email     String?
+  phone     String?
+  whatsapp  String?
+  role      String?
+  isPrimary Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ==================== Engagement & Case ====================
+
+model Engagement {
+  id         String   @id @default(cuid())
+  clientId   String
+  client     Client   @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  type       String
+  fiscalYear String?
+  startDate  DateTime?
+  endDate    DateTime?
+  status     String   @default("ACTIVE")
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  cases Case[]
+}
+
+model Case {
+  id               String    @id @default(cuid())
+  caseNumber       String    @unique
+  clientId         String
+  client           Client    @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  engagementId     String?
+  engagement       Engagement? @relation(fields: [engagementId], references: [id])
+  ownerId          String
+  owner            User      @relation("CaseOwner", fields: [ownerId], references: [id])
+  title            String
+  description      String?
+  department       String
+  caseType         String
+  status           String    @default("DRAFT")
+  priority         String    @default("NORMAL")
+  dueDate          DateTime?
+  anniversaryDate  DateTime?
+  financialYearEnd DateTime?
+
+  paymentStatus     String   @default("NOT_APPLICABLE")
+  outstandingAmount Float?
+
+  signedCopyReceived     Boolean @default(false)
+  originalSignedReceived Boolean @default(false)
+
+  blockerType String?
+  blockerNote String?
+
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  archivedAt DateTime?
+
+  tasks             Task[]
+  documents         Document[]
+  reminders         ReminderEvent[]
+  reviewItems       ReviewItem[]
+  approvals         Approval[]
+  notes             CaseNote[]
+  auditLogs         AuditLog[]
+  submissionPackage SubmissionPackage?
+}
+
+// ==================== Task ====================
+
+model Task {
+  id          String    @id @default(cuid())
+  caseId      String
+  case        Case      @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  title       String
+  description String?
+  status      String    @default("PENDING")
+  assigneeId  String?
+  dueDate     DateTime?
+  completedAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+// ==================== Document ====================
+
+model Document {
+  id                       String    @id @default(cuid())
+  caseId                   String
+  case                     Case      @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  fileName                 String
+  fileType                 String
+  filePath                 String
+  fileSize                 Int
+  category                 String?
+  status                   String    @default("RECEIVED")
+  isSensitive              Boolean   @default(false)
+  retentionPolicy          String?
+  classificationResult     String?
+  classificationConfidence Float?
+  ocrProcessed             Boolean   @default(false)
+  ocrConfidence            Float?
+  uploadedById             String?
+  createdAt                DateTime  @default(now())
+  updatedAt                DateTime  @updatedAt
+  archivedAt               DateTime?
+
+  versions        DocumentVersion[]
+  extractedFields ExtractedField[]
+  reviewItems     ReviewItem[]
+}
+
+model DocumentVersion {
+  id         String   @id @default(cuid())
+  documentId String
+  document   Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  version    Int
+  filePath   String
+  changedBy  String?
+  changeNote String?
+  createdAt  DateTime @default(now())
+}
+
+model ExtractedField {
+  id          String    @id @default(cuid())
+  documentId  String
+  document    Document  @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  fieldName   String
+  fieldValue  String?
+  confidence  Float?
+  isConfirmed Boolean   @default(false)
+  confirmedBy String?
+  confirmedAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+// ==================== Reminder ====================
+
+model ReminderTemplate {
+  id           String   @id @default(cuid())
+  name         String
+  department   String?
+  channel      String
+  subject      String?
+  body         String
+  reminderType String
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  events ReminderEvent[]
+}
+
+model ReminderPolicy {
+  id             String   @id @default(cuid())
+  name           String
+  department     String?
+  caseType       String
+  cadence        String
+  stopConditions String?
+  escalationRules String?
+  isActive       Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model ReminderEvent {
+  id              String    @id @default(cuid())
+  caseId          String
+  case            Case      @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  templateId      String?
+  template        ReminderTemplate? @relation(fields: [templateId], references: [id])
+  channel         String
+  recipientEmail  String?
+  recipientPhone  String?
+  recipientName   String?
+  subject         String?
+  body            String?
+  reminderType    String
+  escalationLevel Int       @default(1)
+  status          String    @default("SCHEDULED")
+  scheduledAt     DateTime
+  sentAt          DateTime?
+  deliveredAt     DateTime?
+  failedAt        DateTime?
+  failureReason   String?
+  stoppedAt       DateTime?
+  stopReason      String?
+  sentById        String?
+  sentBy          User?     @relation("ReminderSender", fields: [sentById], references: [id])
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+}
+
+// ==================== Review Queue ====================
+
+model ReviewItem {
+  id              String    @id @default(cuid())
+  caseId          String?
+  case            Case?     @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  documentId      String?
+  document        Document? @relation(fields: [documentId], references: [id])
+  type            String
+  title           String
+  description     String?
+  aiOutput        String?
+  sourceRefs      String?
+  confidence      Float?
+  status          String    @default("NEW")
+  reviewerId      String?
+  reviewer        User?     @relation("Reviewer", fields: [reviewerId], references: [id])
+  editedContent   String?
+  rejectionReason String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  resolvedAt      DateTime?
+}
+
+// ==================== Approval ====================
+
+model Approval {
+  id         String   @id @default(cuid())
+  caseId     String?
+  case       Case?    @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  userId     String
+  user       User     @relation(fields: [userId], references: [id])
+  action     String
+  note       String?
+  targetType String
+  targetId   String
+  createdAt  DateTime @default(now())
+}
+
+// ==================== Submission Package ====================
+
+model SubmissionPackage {
+  id            String    @id @default(cuid())
+  caseId        String    @unique
+  case          Case      @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  type          String
+  status        String    @default("NOT_READY")
+  checklist     String?
+  documents     String?
+  readinessNote String?
+  submittedAt   DateTime?
+  submittedBy   String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+// ==================== Case Note ====================
+
+model CaseNote {
+  id        String   @id @default(cuid())
+  caseId    String
+  case      Case     @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  authorId  String?
+  author    User?    @relation(fields: [authorId], references: [id])
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ==================== Audit Log ====================
+
+model AuditLog {
+  id         String   @id @default(cuid())
+  userId     String?
+  user       User?    @relation(fields: [userId], references: [id])
+  caseId     String?
+  case       Case?    @relation(fields: [caseId], references: [id])
+  action     String
+  entityType String
+  entityId   String?
+  details    String?
+  ipAddress  String?
+  createdAt  DateTime @default(now())
+
+  @@index([userId])
+  @@index([caseId])
+  @@index([action])
+  @@index([createdAt])
+}
