@@ -113,6 +113,21 @@ class AnchorExtractor(HTMLParser):
     def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
         if tag.lower() != "a":
             return
+        for key, value in attrs:
+            if key.lower() == "href" and value:
+                self._href = value.strip()
+                break
+        self._buffer = []
+
+    def handle_data(self, data: str) -> None:
+        if self._href is not None and data:
+            self._buffer.append(data)
+
+    def handle_endtag(self, tag: str) -> None:
+        if tag.lower() != "a" or self._href is None:
+            return
+        text = " ".join(part.strip() for part in self._buffer if part.strip())
+        self.links.append((self._href, text))
         self._href = None
         self._buffer = []
 
@@ -137,22 +152,6 @@ class TextExtractor(HTMLParser):
 
     def text(self) -> str:
         return " ".join(part.strip() for part in self._parts if part.strip())
-        for key, value in attrs:
-            if key.lower() == "href" and value:
-                self._href = value.strip()
-                break
-
-    def handle_data(self, data: str) -> None:
-        if self._href is not None and data:
-            self._buffer.append(data)
-
-    def handle_endtag(self, tag: str) -> None:
-        if tag.lower() != "a" or self._href is None:
-            return
-        text = " ".join(part.strip() for part in self._buffer if part.strip())
-        self.links.append((self._href, text))
-        self._href = None
-        self._buffer = []
 
 
 def supports_slug(slug: str) -> bool:
@@ -166,6 +165,18 @@ def strategy_for_slug(slug: str) -> OfficialPortalStrategy:
 def default_target_date(now: datetime | None = None) -> date:
     current = now.astimezone(UTC8) if now else datetime.now(tz=UTC8)
     return current.date() - timedelta(days=1)
+
+
+def parse_human_date(value: str) -> str | None:
+    normalized = re.sub(r"\s+", " ", value or "").strip().strip("[]")
+    if not normalized:
+        return None
+    for fmt in ("%d %b %Y", "%d %B %Y", "%d/%m/%Y"):
+        try:
+            return datetime.strptime(normalized, fmt).date().isoformat()
+        except ValueError:
+            continue
+    return None
 
 
 def normalize_url(url: str, base_url: str) -> str:
@@ -327,6 +338,89 @@ def crawl_mida_detail_pages(source_slug: str, strategy: OfficialPortalStrategy, 
         items=items,
         review_items=review_items,
         notes=notes + ([f"Failed seed URLs: {', '.join(failed_seed_urls)}"] if failed_seed_urls else []),
+        metadata={"mode": strategy.mode, "seed_urls": list(strategy.seed_urls), "candidate_count": len(items), "failed_seed_urls": failed_seed_urls},
+    )
+
+
+def mysst_overlay_map(html_text: str, base_url: str) -> dict[str, str]:
+    overlays: dict[str, str] = {}
+    for overlay_id, asset_path in re.findall(
+        r'<div id="(myNav\d+)".*?<object[^>]+data="([^"]+)"',
+        html_text,
+        re.IGNORECASE | re.DOTALL,
+    ):
+        overlays[overlay_id] = normalize_url(asset_path, base_url)
+    return overlays
+
+
+def crawl_mysst_pages(source_slug: str, strategy: OfficialPortalStrategy, target_date: date) -> AdapterResult:
+    items: dict[str, DiscoveredUpdate] = {}
+    failed_seed_urls: list[str] = []
+
+    for seed_url in strategy.seed_urls:
+        html_text = fetch_text(seed_url, timeout=12)
+        if not html_text:
+            failed_seed_urls.append(seed_url)
+            continue
+
+        overlay_targets = mysst_overlay_map(html_text, seed_url)
+        for row in re.findall(r"<tr>.*?</tr>", html_text, re.IGNORECASE | re.DOTALL):
+            date_match = re.search(r"\[\s*([0-9]{1,2}/[0-9]{1,2}/[0-9]{4})\s*\]", row)
+            if not date_match:
+                continue
+            published_date = parse_human_date(date_match.group(1))
+            if published_date != target_date.isoformat():
+                continue
+
+            title_match = re.search(r"<b>(.*?)</b>", row, re.IGNORECASE | re.DOTALL)
+            link_match = re.search(r'href="([^"]+)"', row, re.IGNORECASE)
+            overlay_match = re.search(r"openNav(\d+)\(\)", row, re.IGNORECASE)
+            title = re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", title_match.group(1) if title_match else row)).strip()
+
+            detail_url = None
+            if link_match:
+                detail_url = normalize_url(link_match.group(1), seed_url)
+            elif overlay_match:
+                detail_url = overlay_targets.get(f"myNav{overlay_match.group(1)}")
+
+            if not title or not detail_url:
+                continue
+
+            items[detail_url] = DiscoveredUpdate(
+                source_slug=source_slug,
+                title=title,
+                url=detail_url,
+                label="Tax Notice",
+                published_date=published_date,
+                summary=title,
+                metadata={"discovered_from": seed_url},
+            )
+
+    review_items = []
+    if not items and failed_seed_urls:
+        for failed_seed_url in failed_seed_urls:
+            review_items.append(
+                make_review_item(
+                    source_slug=source_slug,
+                    queue_reason="seed-fetch-failed",
+                    priority="medium",
+                    summary="A MySST seed page returned no HTML during the crawl window.",
+                    seed_url=failed_seed_url,
+                    mode=strategy.mode,
+                )
+            )
+    if not items and not failed_seed_urls:
+        notes = ["MySST pages were reachable, but no row matched the requested target date."]
+    else:
+        notes = ["MySST highlights and announcement tables were parsed directly from the public portal."]
+
+    return AdapterResult(
+        source_slug=source_slug,
+        adapter_name="official-portal",
+        automation_level="automatic",
+        items=list(items.values()),
+        review_items=review_items,
+        notes=list(strategy.notes) + notes,
         metadata={"mode": strategy.mode, "seed_urls": list(strategy.seed_urls), "candidate_count": len(items), "failed_seed_urls": failed_seed_urls},
     )
 
@@ -527,6 +621,8 @@ def crawl_source(source: Mapping[str, Any], *, target_date: date | None = None) 
     strategy = strategy_for_slug(slug)
     if slug == "mida-gov-my":
         return crawl_mida_detail_pages(slug, strategy, crawl_date)
+    if slug == "mysst-customs-gov-my":
+        return crawl_mysst_pages(slug, strategy, crawl_date)
     if strategy.mode == "wordpress-json":
         return crawl_wordpress_json(slug, strategy)
     return crawl_html_portal(slug, strategy)

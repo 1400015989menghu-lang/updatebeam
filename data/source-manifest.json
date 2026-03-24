@@ -100,8 +100,8 @@
       "https://www.customs.gov.my/en/latest-announcement",
       "https://www.customs.gov.my/en/"
     ],
-    "requiresBrowser": true,
-    "reviewMode": "review-only",
+    "requiresBrowser": false,
+    "reviewMode": "automatic",
     "dedupeKeyStrategy": "source-url-target-date",
     "includeKeywords": [
       "service tax",
@@ -140,7 +140,7 @@
       "https://mysst.customs.gov.my/SSTHandbook",
       "https://mysst.customs.gov.my/SSTOffice"
     ],
-    "reviewMode": "review-only",
+    "reviewMode": "automatic",
     "dedupeKeyStrategy": "source-url-target-date",
     "includeKeywords": [
       "service tax",
@@ -300,7 +300,7 @@
       "https://www.kwsp.gov.my/en/news"
     ],
     "requiresBrowser": true,
-    "reviewMode": "review-only",
+    "reviewMode": "hybrid",
     "dedupeKeyStrategy": "source-url-target-date",
     "includeKeywords": [
       "employer",
@@ -336,7 +336,7 @@
       "https://www.perkeso.gov.my/en/news.html"
     ],
     "requiresBrowser": true,
-    "reviewMode": "review-only",
+    "reviewMode": "hybrid",
     "dedupeKeyStrategy": "source-url-target-date",
     "includeKeywords": [
       "perkeso",
@@ -505,11 +505,12 @@
     "seedUrls": [
       "https://www.taxathand.com/"
     ],
-    "crawlStrategy": "enterprise-html",
+    "crawlStrategy": "browser-official",
     "entryUrls": [
       "https://www.taxathand.com/"
     ],
-    "reviewMode": "review-only",
+    "requiresBrowser": true,
+    "reviewMode": "hybrid",
     "dedupeKeyStrategy": "source-url-target-date",
     "includeKeywords": [
       "tax alert",

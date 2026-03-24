@@ -91,7 +91,7 @@ REVIEW_ONLY_STRATEGIES: dict[str, ReviewOnlyStrategy] = {
     ),
     "anc-group-facebook": ReviewOnlyStrategy(
         slug="anc-group-facebook",
-        rationale="Anonymous page fetch times out and Facebook pages are heavily JS/login dependent.",
+        rationale="Browser navigation still times out on the Facebook share URL, and the page remains unsuitable for unattended anonymous crawling.",
         recommended_mode="review-only",
         unblock_conditions=(
             "A stable public RSS or export feed exists",
@@ -101,7 +101,7 @@ REVIEW_ONLY_STRATEGIES: dict[str, ReviewOnlyStrategy] = {
     ),
     "sql-accounting-xiaohongshu": ReviewOnlyStrategy(
         slug="sql-accounting-xiaohongshu",
-        rationale="Anonymous profile URL currently returns 404 and Xiaohongshu is high-friction for unattended scraping.",
+        rationale="The profile HTML exposes a shell page, but browser sessions immediately hit a login wall before any notes become visible.",
         recommended_mode="review-only",
         unblock_conditions=(
             "Vendor provides an official website mirror",
@@ -111,7 +111,7 @@ REVIEW_ONLY_STRATEGIES: dict[str, ReviewOnlyStrategy] = {
     ),
     "sql-payroll-xiaohongshu": ReviewOnlyStrategy(
         slug="sql-payroll-xiaohongshu",
-        rationale="Anonymous profile URL currently returns 404 and the platform has strong anti-automation controls.",
+        rationale="The profile HTML exposes a shell page, but browser sessions immediately hit a login wall before any notes become visible.",
         recommended_mode="review-only",
         unblock_conditions=(
             "Vendor provides an official website mirror",

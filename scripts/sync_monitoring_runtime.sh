@@ -8,6 +8,7 @@ RUNTIME_SCRIPTS_DIR="${RUNTIME_ROOT}/scripts"
 RUNTIME_ADAPTERS_DIR="${RUNTIME_SCRIPTS_DIR}/adapters"
 RUNTIME_DATA_DIR="${RUNTIME_ROOT}/data"
 RUNTIME_LOG_DIR="${RUNTIME_ROOT}/logs"
+RUNTIME_BROWSER_DIR="${RUNTIME_ROOT}/browser-runtime"
 LAUNCH_AGENTS_DIR="${HOME}/Library/LaunchAgents"
 LAUNCH_AGENT_PLIST="${LAUNCH_AGENTS_DIR}/com.updatebeam.monitoring-scheduler.plist"
 SOURCE_DB_PATH="${PROJECT_ROOT}/prisma/dev.db"
@@ -17,6 +18,7 @@ mkdir -p "$RUNTIME_SCRIPTS_DIR"
 mkdir -p "$RUNTIME_ADAPTERS_DIR"
 mkdir -p "$RUNTIME_DATA_DIR"
 mkdir -p "$RUNTIME_LOG_DIR"
+mkdir -p "$RUNTIME_BROWSER_DIR"
 mkdir -p "$LAUNCH_AGENTS_DIR"
 
 cp "${PROJECT_ROOT}/scripts/monitoring_digest_scheduler.py" "${RUNTIME_SCRIPTS_DIR}/"
@@ -29,6 +31,8 @@ cp "${PROJECT_ROOT}/scripts/hasil_crawler.py" "${RUNTIME_SCRIPTS_DIR}/"
 cp "${PROJECT_ROOT}/scripts/extract_pdf_text.py" "${RUNTIME_SCRIPTS_DIR}/"
 cp "${PROJECT_ROOT}/scripts/check_runtime.sh" "${RUNTIME_SCRIPTS_DIR}/"
 cp "${PROJECT_ROOT}/scripts/check_local_runtime.sh" "${RUNTIME_SCRIPTS_DIR}/"
+cp "${PROJECT_ROOT}/scripts/browser_probe.py" "${RUNTIME_SCRIPTS_DIR}/"
+cp "${PROJECT_ROOT}/scripts/browser_probe.cjs" "${RUNTIME_SCRIPTS_DIR}/"
 find "${PROJECT_ROOT}/scripts/adapters" -maxdepth 1 -type f -name '*.py' -exec cp {} "${RUNTIME_ADAPTERS_DIR}/" \;
 cp "${PROJECT_ROOT}/data/source-manifest.json" "${RUNTIME_DATA_DIR}/"
 
@@ -42,6 +46,20 @@ fi
 
 if [[ ! -f "$TARGET_DB_PATH" && -f "$SOURCE_DB_PATH" ]]; then
   cp "$SOURCE_DB_PATH" "$TARGET_DB_PATH"
+fi
+
+cat > "${RUNTIME_BROWSER_DIR}/package.json" <<'EOF'
+{
+  "name": "updatebeam-browser-runtime",
+  "private": true,
+  "dependencies": {
+    "playwright": "1.58.2"
+  }
+}
+EOF
+
+if [[ ! -d "${RUNTIME_BROWSER_DIR}/node_modules/playwright" ]]; then
+  (cd "${RUNTIME_BROWSER_DIR}" && npm install --silent)
 fi
 
 cat > "${RUNTIME_SCRIPTS_DIR}/run_monitoring_scheduler.sh" <<'EOF'
