@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>Label</key>
+    <string>com.updatebeam.monitoring-scheduler</string>
+
+    <key>ProgramArguments</key>
+    <array>
+      <string>/Users/menghu/.updatebeam/scripts/run_monitoring_scheduler.sh</string>
+    </array>
+
+    <key>WorkingDirectory</key>
+    <string>/Users/menghu/.updatebeam</string>
+
+    <key>EnvironmentVariables</key>
+    <dict>
+      <key>PATH</key>
+      <string>/usr/local/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+      <key>DATABASE_URL</key>
+      <string>file:/Users/menghu/.updatebeam/dev.db</string>
+    </dict>
+
+    <key>RunAtLoad</key>
+    <true/>
+
+    <key>StartInterval</key>
+    <integer>900</integer>
+
+    <key>StandardOutPath</key>
+    <string>/Users/menghu/.updatebeam/logs/launchd-monitoring-scheduler.log</string>
+
+    <key>StandardErrorPath</key>
+    <string>/Users/menghu/.updatebeam/logs/launchd-monitoring-scheduler-error.log</string>
+  </dict>
+</plist>

@@ -45,3 +45,10 @@ next-env.d.ts
 # SQLite database
 *.db
 *.db-journal
+
+# local runtime / debug artifacts
+/.playwright-cli/
+/.pycache-tmp/
+/.hasil_daily_brief_state.json
+/logs/
+/output/

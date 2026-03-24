@@ -1,0 +1,253 @@
+{
+  "sourceDocument": "/Users/menghu/Documents/01codex/02 马来西亚/Ai source(1).docx",
+  "extractedAt": "2026-03-23T15:02:24.805Z",
+  "count": 20,
+  "items": [
+    {
+      "slug": "www-hasil-gov-my",
+      "category": "tax",
+      "organization": "马来西亚内陆税收局 (LHDN / IRB)",
+      "officialWebsite": "https://www.hasil.gov.my/",
+      "suggestedKeywords": [
+        "Webinar",
+        "e-Invoice",
+        "e-Invoicing",
+        "Public Ruling",
+        "CP204",
+        "Tax Treatment",
+        "Capital Allowance",
+        "Individual Tax Filing",
+        "Corporate Tax Filing"
+      ]
+    },
+    {
+      "slug": "lom-agc-gov-my-index-php",
+      "category": "tax",
+      "organization": "Federal legislation",
+      "officialWebsite": "https://lom.agc.gov.my/index.php",
+      "suggestedKeywords": [
+        "Webinar",
+        "e-Invoice",
+        "e-Invoicing",
+        "Public Ruling",
+        "CP204",
+        "Tax Treatment",
+        "Capital Allowance",
+        "Individual Tax Filing",
+        "Corporate Tax Filing"
+      ]
+    },
+    {
+      "slug": "www-customs-gov-my",
+      "category": "tax",
+      "organization": "马来西亚皇家关税局 (JKDM / Customs)",
+      "officialWebsite": "https://www.customs.gov.my/",
+      "suggestedKeywords": [
+        "Service Tax",
+        "Sales Tax",
+        "SST Exemption",
+        "Customs Ruling",
+        "SVDP",
+        "Tourism Tax"
+      ]
+    },
+    {
+      "slug": "mysst-customs-gov-my",
+      "category": "tax",
+      "organization": "MySST Portal Updates",
+      "officialWebsite": "https://mysst.customs.gov.my/",
+      "suggestedKeywords": [
+        "Service Tax",
+        "Sales Tax",
+        "SST Exemption",
+        "Customs Ruling",
+        "SVDP",
+        "Tourism Tax"
+      ]
+    },
+    {
+      "slug": "www-mida-gov-my",
+      "category": "government",
+      "organization": "马来西亚投资发展局 (MIDA)",
+      "officialWebsite": "https://www.mida.gov.my/",
+      "suggestedKeywords": [
+        "Pioneer Status",
+        "Investment Tax Allowance (ITA)",
+        "Reinvestment Allowance",
+        "Automation Grant",
+        "Digital Status"
+      ]
+    },
+    {
+      "slug": "www-ssm-com-my",
+      "category": "regulatory",
+      "organization": "马来西亚企业监管局 (SSM)",
+      "officialWebsite": "https://www.ssm.com.my/",
+      "suggestedKeywords": [
+        "Companies Act 2016",
+        "Practice Note",
+        "MBRS",
+        "Beneficial Ownership (eBOS)",
+        "Annual Return",
+        "Financial Statement Lodgement"
+      ]
+    },
+    {
+      "slug": "www-masb-org-my",
+      "category": "regulatory",
+      "organization": "马来西亚会计准则委员会 (MASB)",
+      "officialWebsite": "https://www.masb.org.my/",
+      "suggestedKeywords": [
+        "MFRS",
+        "MPERS",
+        "PERS",
+        "Financial Reporting Standards",
+        "New Standard Exposure Draft"
+      ]
+    },
+    {
+      "slug": "www-kwsp-gov-my-en",
+      "category": "regulatory",
+      "organization": "epf",
+      "officialWebsite": "https://www.kwsp.gov.my/en/",
+      "suggestedKeywords": [
+        "MFRS",
+        "MPERS",
+        "PERS",
+        "Financial Reporting Standards",
+        "New Standard Exposure Draft"
+      ]
+    },
+    {
+      "slug": "www-perkeso-gov-my",
+      "category": "regulatory",
+      "organization": "perkeso",
+      "officialWebsite": "https://www.perkeso.gov.my/",
+      "suggestedKeywords": [
+        "MFRS",
+        "MPERS",
+        "PERS",
+        "Financial Reporting Standards",
+        "New Standard Exposure Draft"
+      ]
+    },
+    {
+      "slug": "mia-org-my",
+      "category": "regulatory",
+      "organization": "马来西亚会计师公会 (MIA)",
+      "officialWebsite": "https://mia.org.my/",
+      "suggestedKeywords": [
+        "By-Laws",
+        "Audit Quality",
+        "International Standards on Auditing (ISA)",
+        "MIA Circular",
+        "Professional Ethics"
+      ]
+    },
+    {
+      "slug": "docs-sql-com-my-sqlacc-changelog",
+      "category": "other",
+      "organization": "SQL Accounting (Official)",
+      "officialWebsite": "https://docs.sql.com.my/sqlacc/changelog",
+      "suggestedKeywords": []
+    },
+    {
+      "slug": "www-xiaohongshu-com-user-profile-60ba509f0000000001008605",
+      "category": "other",
+      "organization": "SQL Accounting (XHS)",
+      "officialWebsite": "https://www.xiaohongshu.com/user/profile/60ba509f0000000001008605",
+      "suggestedKeywords": []
+    },
+    {
+      "slug": "www-xiaohongshu-com-user-profile-65475d65000000000301f1b4",
+      "category": "other",
+      "organization": "SQL Payroll (XHS)",
+      "officialWebsite": "https://www.xiaohongshu.com/user/profile/65475d65000000000301f1b4",
+      "suggestedKeywords": []
+    },
+    {
+      "slug": "www-taxathand-com",
+      "category": "other",
+      "organization": "Deloitte Tax@Hand",
+      "officialWebsite": "https://www.taxathand.com/",
+      "suggestedKeywords": [
+        "Tax Alert",
+        "Budget Commentary",
+        "Thought Leadership",
+        "Audit Methodology Update"
+      ]
+    },
+    {
+      "slug": "kpmg-com-my-en-home-html",
+      "category": "other",
+      "organization": "KPMG MY",
+      "officialWebsite": "https://kpmg.com/my/en/home.html",
+      "suggestedKeywords": [
+        "Tax Alert",
+        "Budget Commentary",
+        "Thought Leadership",
+        "Audit Methodology Update"
+      ]
+    },
+    {
+      "slug": "landco-my",
+      "category": "other",
+      "organization": "L & Co",
+      "officialWebsite": "https://landco.my/",
+      "suggestedKeywords": [
+        "Tax Alert",
+        "Budget Commentary",
+        "Thought Leadership",
+        "Audit Methodology Update"
+      ]
+    },
+    {
+      "slug": "ccs-co-com",
+      "category": "other",
+      "organization": "CCS Advisory Updates",
+      "officialWebsite": "https://ccs-co.com/",
+      "suggestedKeywords": [
+        "Tax Alert",
+        "Budget Commentary",
+        "Thought Leadership",
+        "Audit Methodology Update"
+      ]
+    },
+    {
+      "slug": "www-yycadvisors-com",
+      "category": "other",
+      "organization": "YYC Advisors",
+      "officialWebsite": "https://www.yycadvisors.com/",
+      "suggestedKeywords": [
+        "Tax Alert",
+        "Budget Commentary",
+        "Thought Leadership",
+        "Audit Methodology Update"
+      ]
+    },
+    {
+      "slug": "www-facebook-com-share-1ct52asrhc",
+      "category": "other",
+      "organization": "ANC Group Facebook Updates",
+      "officialWebsite": "https://www.facebook.com/share/1CT52asRHC/",
+      "suggestedKeywords": [
+        "Tax Alert",
+        "Budget Commentary",
+        "Thought Leadership",
+        "Audit Methodology Update"
+      ]
+    },
+    {
+      "slug": "youtube-com-anc-group-tv",
+      "category": "other",
+      "organization": "ANC Group YouTube Updates",
+      "officialWebsite": "https://youtube.com/@anc-group-tv",
+      "suggestedKeywords": [
+        "Tax Alert",
+        "Budget Commentary",
+        "Thought Leadership",
+        "Audit Methodology Update"
+      ]
+    }
+  ]
+}

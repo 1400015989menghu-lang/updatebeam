@@ -1,0 +1,738 @@
+[
+  {
+    "slug": "hasil-en",
+    "name": "HASiL Public Updates (EN)",
+    "organizationName": "LHDN / IRB",
+    "description": "Track English-language public updates from Malaysia's Inland Revenue Board, including announcements, media releases, e-Invoice events, and filing guidance.",
+    "rootUrl": "https://www.hasil.gov.my/en/",
+    "category": "tax",
+    "adapterType": "hasil",
+    "sourceType": "official-website",
+    "automationMode": "html",
+    "language": "en",
+    "trustTier": "official",
+    "timezone": "Asia/Kuala_Lumpur",
+    "isActive": true,
+    "isPublic": true,
+    "seedUrls": [
+      "https://www.hasil.gov.my/en/announcement/",
+      "https://www.hasil.gov.my/en/e-invoice/communication-and-publicity/media-release/",
+      "https://www.hasil.gov.my/en/e-invoice/e-invoice-events/"
+    ],
+    "crawlStrategy": "hasil",
+    "entryUrls": [
+      "https://www.hasil.gov.my/en/announcement/",
+      "https://www.hasil.gov.my/en/e-invoice/communication-and-publicity/media-release/",
+      "https://www.hasil.gov.my/en/e-invoice/e-invoice-events/"
+    ],
+    "reviewMode": "automatic",
+    "dedupeKeyStrategy": "source-url-target-date",
+    "includeKeywords": [
+      "webinar",
+      "e-invoice",
+      "e-invoicing",
+      "public ruling",
+      "cp204",
+      "tax treatment",
+      "capital allowance",
+      "individual tax filing",
+      "corporate tax filing"
+    ],
+    "excludeKeywords": []
+  },
+  {
+    "slug": "lom-agc-my",
+    "name": "Malaysia Federal Legislation Monitor",
+    "organizationName": "Attorney General's Chambers Malaysia",
+    "description": "Monitor Malaysia federal legislation and related tax and stamp-duty legal changes published on the law portal.",
+    "rootUrl": "https://lom.agc.gov.my/index.php",
+    "category": "regulatory",
+    "adapterType": "generic-html",
+    "sourceType": "official-legislation",
+    "automationMode": "html",
+    "language": "en",
+    "trustTier": "official",
+    "timezone": "Asia/Kuala_Lumpur",
+    "isActive": true,
+    "isPublic": true,
+    "seedUrls": [
+      "https://lom.agc.gov.my/index.php"
+    ],
+    "crawlStrategy": "legislation-portal",
+    "entryUrls": [
+      "https://lom.agc.gov.my/index.php",
+      "https://lom.agc.gov.my/act-view.php",
+      "https://lom.agc.gov.my/list-of-acts.php"
+    ],
+    "reviewMode": "automatic",
+    "dedupeKeyStrategy": "source-url-target-date",
+    "includeKeywords": [
+      "federal legislation",
+      "income tax act",
+      "stamp duty",
+      "amendment",
+      "act",
+      "order",
+      "gazette"
+    ],
+    "excludeKeywords": []
+  },
+  {
+    "slug": "customs-gov-my",
+    "name": "Royal Malaysian Customs Updates",
+    "organizationName": "JKDM / Customs",
+    "description": "Track official updates from Royal Malaysian Customs related to SST, customs rulings, exemptions, and tourism tax.",
+    "rootUrl": "https://www.customs.gov.my/",
+    "category": "tax",
+    "adapterType": "generic-html",
+    "sourceType": "official-website",
+    "automationMode": "html",
+    "language": "en",
+    "trustTier": "official",
+    "timezone": "Asia/Kuala_Lumpur",
+    "isActive": true,
+    "isPublic": true,
+    "seedUrls": [
+      "https://www.customs.gov.my/"
+    ],
+    "crawlStrategy": "browser-official",
+    "entryUrls": [
+      "https://www.customs.gov.my/en/latest-announcement",
+      "https://www.customs.gov.my/en/"
+    ],
+    "requiresBrowser": true,
+    "reviewMode": "review-only",
+    "dedupeKeyStrategy": "source-url-target-date",
+    "includeKeywords": [
+      "service tax",
+      "sales tax",
+      "sst exemption",
+      "customs ruling",
+      "svdp",
+      "tourism tax"
+    ],
+    "excludeKeywords": []
+  },
+  {
+    "slug": "mysst-customs-gov-my",
+    "name": "MySST Portal Updates",
+    "organizationName": "JKDM / Customs",
+    "description": "Track updates published on the Malaysian SST portal for sales tax and service tax workflows.",
+    "rootUrl": "https://mysst.customs.gov.my/",
+    "category": "tax",
+    "adapterType": "generic-html",
+    "sourceType": "official-portal",
+    "automationMode": "html",
+    "language": "en",
+    "trustTier": "official",
+    "timezone": "Asia/Kuala_Lumpur",
+    "isActive": true,
+    "isPublic": true,
+    "seedUrls": [
+      "https://mysst.customs.gov.my/Announcement"
+    ],
+    "crawlStrategy": "official-portal",
+    "entryUrls": [
+      "https://mysst.customs.gov.my/",
+      "https://mysst.customs.gov.my/Announcement",
+      "https://mysst.customs.gov.my/highlights",
+      "https://mysst.customs.gov.my/SSTOrders",
+      "https://mysst.customs.gov.my/SSTHandbook",
+      "https://mysst.customs.gov.my/SSTOffice"
+    ],
+    "reviewMode": "review-only",
+    "dedupeKeyStrategy": "source-url-target-date",
+    "includeKeywords": [
+      "service tax",
+      "sales tax",
+      "sst exemption",
+      "customs ruling",
+      "svdp",
+      "tourism tax"
+    ],
+    "excludeKeywords": []
+  },
+  {
+    "slug": "mida-gov-my",
+    "name": "MIDA Incentives Updates",
+    "organizationName": "MIDA",
+    "description": "Track incentive, digital, automation, and investment allowance updates from the Malaysian Investment Development Authority.",
+    "rootUrl": "https://www.mida.gov.my/",
+    "category": "government",
+    "adapterType": "generic-html",
+    "sourceType": "official-website",
+    "automationMode": "html",
+    "language": "en",
+    "trustTier": "official",
+    "timezone": "Asia/Kuala_Lumpur",
+    "isActive": true,
+    "isPublic": true,
+    "seedUrls": [
+      "https://www.mida.gov.my/media-and-events/news/"
+    ],
+    "crawlStrategy": "official-portal",
+    "entryUrls": [
+      "https://www.mida.gov.my/media-and-events/news/",
+      "https://www.mida.gov.my/media-and-events/announcement-media-release/",
+      "https://www.mida.gov.my/why-malaysia/mida-insights/"
+    ],
+    "reviewMode": "automatic",
+    "dedupeKeyStrategy": "source-url-target-date",
+    "includeKeywords": [
+      "investment",
+      "investments",
+      "incentive",
+      "allowance",
+      "automation",
+      "digital",
+      "manufacturing",
+      "semiconductor",
+      "data centre",
+      "fdi",
+      "newsletter",
+      "press release"
+    ],
+    "excludeKeywords": []
+  },
+  {
+    "slug": "ssm-com-my",
+    "name": "SSM Corporate Compliance Updates",
+    "organizationName": "SSM",
+    "description": "Track company secretarial and filing updates from the Companies Commission of Malaysia.",
+    "rootUrl": "https://www.ssm.com.my/",
+    "category": "regulatory",
+    "adapterType": "generic-html",
+    "sourceType": "official-website",
+    "automationMode": "html",
+    "language": "en",
+    "trustTier": "official",
+    "timezone": "Asia/Kuala_Lumpur",
+    "isActive": true,
+    "isPublic": true,
+    "seedUrls": [
+      "https://www.ssm.com.my/Pages/Home.aspx"
+    ],
+    "crawlStrategy": "official-portal",
+    "entryUrls": [
+      "https://www.ssm.com.my/Pages/Home.aspx",
+      "https://www.ssm.com.my/Pages/RSS.aspx",
+      "https://www.ssm.com.my/Pages/Publication/Press_Release/Press-Release.aspx",
+      "https://www.ssm.com.my/Pages/Gallery/Online_News/Online_News.aspx",
+      "https://www.ssm.com.my/Lists/Announcement/AllItems.aspx",
+      "https://www.ssm.com.my/Pages/Footer/Sitemap.aspx"
+    ],
+    "reviewMode": "automatic",
+    "dedupeKeyStrategy": "source-url-target-date",
+    "includeKeywords": [
+      "companies act 2016",
+      "practice note",
+      "mbrs",
+      "beneficial ownership",
+      "ebos",
+      "annual return",
+      "financial statement lodgement",
+      "press release",
+      "announcement",
+      "online news",
+      "circular",
+      "compliance"
+    ],
+    "excludeKeywords": []
+  },
+  {
+    "slug": "masb-org-my",
+    "name": "MASB Standards Updates",
+    "organizationName": "MASB",
+    "description": "Track financial reporting standards, exposure drafts, and accounting framework updates from the Malaysian Accounting Standards Board.",
+    "rootUrl": "https://www.masb.org.my/",
+    "category": "regulatory",
+    "adapterType": "generic-html",
+    "sourceType": "professional-body",
+    "automationMode": "html",
+    "language": "en",
+    "trustTier": "professional",
+    "timezone": "Asia/Kuala_Lumpur",
+    "isActive": true,
+    "isPublic": true,
+    "seedUrls": [
+      "http://www.masb.org.my/pages.php?id=34"
+    ],
+    "crawlStrategy": "professional-library",
+    "entryUrls": [
+      "http://www.masb.org.my/pages.php?id=34"
+    ],
+    "reviewMode": "automatic",
+    "dedupeKeyStrategy": "source-url-target-date",
+    "includeKeywords": [
+      "mfrs",
+      "mpers",
+      "pers",
+      "financial reporting standards",
+      "new standard exposure draft",
+      "standard",
+      "amendment",
+      "guidance",
+      "consultation"
+    ],
+    "excludeKeywords": []
+  },
+  {
+    "slug": "kwsp-gov-my",
+    "name": "EPF Employer Updates",
+    "organizationName": "KWSP / EPF",
+    "description": "Track official employer-facing updates from the Employees Provident Fund of Malaysia.",
+    "rootUrl": "https://www.kwsp.gov.my/en/",
+    "category": "government",
+    "adapterType": "generic-html",
+    "sourceType": "official-website",
+    "automationMode": "html",
+    "language": "en",
+    "trustTier": "official",
+    "timezone": "Asia/Kuala_Lumpur",
+    "isActive": true,
+    "isPublic": true,
+    "seedUrls": [
+      "https://www.kwsp.gov.my/en/"
+    ],
+    "crawlStrategy": "browser-official",
+    "entryUrls": [
+      "https://www.kwsp.gov.my/en/employer",
+      "https://www.kwsp.gov.my/en/news"
+    ],
+    "requiresBrowser": true,
+    "reviewMode": "review-only",
+    "dedupeKeyStrategy": "source-url-target-date",
+    "includeKeywords": [
+      "employer",
+      "epf",
+      "kwsp",
+      "contribution",
+      "dividend",
+      "withdrawal"
+    ],
+    "excludeKeywords": []
+  },
+  {
+    "slug": "perkeso-gov-my",
+    "name": "PERKESO Employer Updates",
+    "organizationName": "PERKESO / SOCSO",
+    "description": "Track employer-facing updates from PERKESO related to contributions, claims, and social security administration.",
+    "rootUrl": "https://www.perkeso.gov.my/",
+    "category": "government",
+    "adapterType": "generic-html",
+    "sourceType": "official-website",
+    "automationMode": "html",
+    "language": "en",
+    "trustTier": "official",
+    "timezone": "Asia/Kuala_Lumpur",
+    "isActive": true,
+    "isPublic": true,
+    "seedUrls": [
+      "https://www.perkeso.gov.my/"
+    ],
+    "crawlStrategy": "browser-official",
+    "entryUrls": [
+      "https://www.perkeso.gov.my/en/",
+      "https://www.perkeso.gov.my/en/news.html"
+    ],
+    "requiresBrowser": true,
+    "reviewMode": "review-only",
+    "dedupeKeyStrategy": "source-url-target-date",
+    "includeKeywords": [
+      "perkeso",
+      "socso",
+      "contribution",
+      "claim",
+      "employer",
+      "benefit"
+    ],
+    "excludeKeywords": []
+  },
+  {
+    "slug": "mia-org-my",
+    "name": "MIA Professional Updates",
+    "organizationName": "MIA",
+    "description": "Track by-laws, professional ethics, auditing standards, and circular updates from the Malaysian Institute of Accountants.",
+    "rootUrl": "https://mia.org.my/",
+    "category": "regulatory",
+    "adapterType": "generic-html",
+    "sourceType": "professional-body",
+    "automationMode": "html",
+    "language": "en",
+    "trustTier": "professional",
+    "timezone": "Asia/Kuala_Lumpur",
+    "isActive": true,
+    "isPublic": true,
+    "seedUrls": [
+      "https://mia.org.my/"
+    ],
+    "crawlStrategy": "rss-professional",
+    "entryUrls": [
+      "https://mia.org.my/feed/"
+    ],
+    "feedUrl": "https://mia.org.my/feed/",
+    "reviewMode": "automatic",
+    "dedupeKeyStrategy": "source-url-target-date",
+    "includeKeywords": [
+      "by-laws",
+      "audit quality",
+      "international standards on auditing",
+      "isa",
+      "mia circular",
+      "professional ethics"
+    ],
+    "excludeKeywords": []
+  },
+  {
+    "slug": "sql-accounting-changelog",
+    "name": "SQL Accounting Changelog",
+    "organizationName": "SQL Accounting",
+    "description": "Track official SQL Accounting changelog entries and release notes.",
+    "rootUrl": "https://docs.sql.com.my/sqlacc/changelog",
+    "category": "other",
+    "adapterType": "generic-html",
+    "sourceType": "software-vendor",
+    "automationMode": "changelog",
+    "language": "en",
+    "trustTier": "vendor",
+    "timezone": "Asia/Kuala_Lumpur",
+    "isActive": true,
+    "isPublic": true,
+    "seedUrls": [
+      "https://docs.sql.com.my/sqlacc/changelog"
+    ],
+    "crawlStrategy": "changelog",
+    "entryUrls": [
+      "https://docs.sql.com.my/sqlacc/changelog"
+    ],
+    "feedUrl": "https://docs.sql.com.my/sqlacc/changelog/rss.xml",
+    "reviewMode": "automatic",
+    "dedupeKeyStrategy": "source-url-target-date",
+    "includeKeywords": [
+      "release notes",
+      "changelog",
+      "sql accounting",
+      "sql payroll",
+      "update"
+    ],
+    "excludeKeywords": []
+  },
+  {
+    "slug": "sql-accounting-xiaohongshu",
+    "name": "SQL Accounting (Xiaohongshu)",
+    "organizationName": "SQL Accounting",
+    "description": "Track Xiaohongshu posts from SQL Accounting for product and accounting workflow updates.",
+    "rootUrl": "https://www.xiaohongshu.com/user/profile/60ba509f0000000001008605",
+    "category": "other",
+    "adapterType": "generic-html",
+    "sourceType": "social-channel",
+    "automationMode": "social",
+    "language": "zh",
+    "trustTier": "vendor-social",
+    "timezone": "Asia/Shanghai",
+    "isActive": true,
+    "isPublic": true,
+    "seedUrls": [
+      "https://www.xiaohongshu.com/user/profile/60ba509f0000000001008605"
+    ],
+    "crawlStrategy": "enterprise-html",
+    "entryUrls": [
+      "https://www.xiaohongshu.com/user/profile/60ba509f0000000001008605"
+    ],
+    "requiresBrowser": true,
+    "reviewMode": "review-only",
+    "dedupeKeyStrategy": "source-url-target-date",
+    "includeKeywords": [
+      "sql accounting",
+      "accounting",
+      "税务",
+      "报税",
+      "电子发票",
+      "update"
+    ],
+    "excludeKeywords": []
+  },
+  {
+    "slug": "sql-payroll-xiaohongshu",
+    "name": "SQL Payroll (Xiaohongshu)",
+    "organizationName": "SQL Payroll",
+    "description": "Track Xiaohongshu posts from SQL Payroll for payroll and employer workflow updates.",
+    "rootUrl": "https://www.xiaohongshu.com/user/profile/65475d65000000000301f1b4",
+    "category": "other",
+    "adapterType": "generic-html",
+    "sourceType": "social-channel",
+    "automationMode": "social",
+    "language": "zh",
+    "trustTier": "vendor-social",
+    "timezone": "Asia/Shanghai",
+    "isActive": true,
+    "isPublic": true,
+    "seedUrls": [
+      "https://www.xiaohongshu.com/user/profile/65475d65000000000301f1b4"
+    ],
+    "crawlStrategy": "enterprise-html",
+    "entryUrls": [
+      "https://www.xiaohongshu.com/user/profile/65475d65000000000301f1b4"
+    ],
+    "requiresBrowser": true,
+    "reviewMode": "review-only",
+    "dedupeKeyStrategy": "source-url-target-date",
+    "includeKeywords": [
+      "sql payroll",
+      "payroll",
+      "工资",
+      "epf",
+      "socso",
+      "pcb"
+    ],
+    "excludeKeywords": []
+  },
+  {
+    "slug": "deloitte-taxathand",
+    "name": "Deloitte Tax@Hand",
+    "organizationName": "Deloitte",
+    "description": "Track Malaysia-relevant tax alerts and commentary from Deloitte Tax@Hand.",
+    "rootUrl": "https://www.taxathand.com/",
+    "category": "other",
+    "adapterType": "generic-html",
+    "sourceType": "competitor-firm",
+    "automationMode": "html",
+    "language": "en",
+    "trustTier": "competitor",
+    "timezone": "Asia/Kuala_Lumpur",
+    "isActive": true,
+    "isPublic": true,
+    "seedUrls": [
+      "https://www.taxathand.com/"
+    ],
+    "crawlStrategy": "enterprise-html",
+    "entryUrls": [
+      "https://www.taxathand.com/"
+    ],
+    "reviewMode": "review-only",
+    "dedupeKeyStrategy": "source-url-target-date",
+    "includeKeywords": [
+      "tax alert",
+      "budget commentary",
+      "thought leadership",
+      "audit methodology update",
+      "malaysia"
+    ],
+    "excludeKeywords": []
+  },
+  {
+    "slug": "kpmg-my",
+    "name": "KPMG Malaysia Insights",
+    "organizationName": "KPMG Malaysia",
+    "description": "Track public tax and advisory updates from KPMG Malaysia.",
+    "rootUrl": "https://kpmg.com/my/en/home.html",
+    "category": "other",
+    "adapterType": "generic-html",
+    "sourceType": "competitor-firm",
+    "automationMode": "html",
+    "language": "en",
+    "trustTier": "competitor",
+    "timezone": "Asia/Kuala_Lumpur",
+    "isActive": true,
+    "isPublic": true,
+    "seedUrls": [
+      "https://kpmg.com/my/en/services/tax/tax-whiz.html"
+    ],
+    "crawlStrategy": "enterprise-html",
+    "entryUrls": [
+      "https://kpmg.com/my/en/services/tax/tax-whiz.html",
+      "https://kpmg.com/my/en/home/insights.html",
+      "https://kpmg.com/my/en/services/tax/tax-whiz-general.html"
+    ],
+    "reviewMode": "automatic",
+    "dedupeKeyStrategy": "source-url-target-date",
+    "includeKeywords": [
+      "tax alert",
+      "budget commentary",
+      "thought leadership",
+      "audit methodology update",
+      "malaysia",
+      "insight",
+      "press release",
+      "sustainability",
+      "tax whiz"
+    ],
+    "excludeKeywords": []
+  },
+  {
+    "slug": "landco-my",
+    "name": "L & Co Updates",
+    "organizationName": "L & Co",
+    "description": "Track public tax and accounting updates from L & Co.",
+    "rootUrl": "https://landco.my/",
+    "category": "other",
+    "adapterType": "generic-html",
+    "sourceType": "competitor-firm",
+    "automationMode": "html",
+    "language": "en",
+    "trustTier": "competitor",
+    "timezone": "Asia/Kuala_Lumpur",
+    "isActive": true,
+    "isPublic": true,
+    "seedUrls": [
+      "https://landco.my/"
+    ],
+    "crawlStrategy": "wordpress-feed",
+    "entryUrls": [
+      "https://landco.my/information-sharing/"
+    ],
+    "feedUrl": "https://landco.my/wp-json/wp/v2/posts?per_page=20&_embed=1",
+    "reviewMode": "automatic",
+    "dedupeKeyStrategy": "source-url-target-date",
+    "includeKeywords": [
+      "tax alert",
+      "budget commentary",
+      "thought leadership",
+      "audit methodology update"
+    ],
+    "excludeKeywords": []
+  },
+  {
+    "slug": "ccs-co-com",
+    "name": "CCS Advisory Updates",
+    "organizationName": "CCS",
+    "description": "Track public tax, audit, and business advisory updates from CCS.",
+    "rootUrl": "https://ccs-co.com/",
+    "category": "other",
+    "adapterType": "generic-html",
+    "sourceType": "competitor-firm",
+    "automationMode": "html",
+    "language": "en",
+    "trustTier": "competitor",
+    "timezone": "Asia/Kuala_Lumpur",
+    "isActive": true,
+    "isPublic": true,
+    "seedUrls": [
+      "https://ccs-co.com/"
+    ],
+    "crawlStrategy": "wordpress-feed",
+    "entryUrls": [
+      "https://ccs-co.com/post/"
+    ],
+    "feedUrl": "https://ccs-co.com/wp-json/wp/v2/posts?per_page=20&_embed=1",
+    "reviewMode": "automatic",
+    "dedupeKeyStrategy": "source-url-target-date",
+    "includeKeywords": [
+      "tax alert",
+      "budget commentary",
+      "thought leadership",
+      "audit methodology update"
+    ],
+    "excludeKeywords": []
+  },
+  {
+    "slug": "yyc-advisors",
+    "name": "YYC Advisors Updates",
+    "organizationName": "YYC Advisors",
+    "description": "Track public tax and accounting updates from YYC Advisors.",
+    "rootUrl": "https://www.yycadvisors.com/",
+    "category": "other",
+    "adapterType": "generic-html",
+    "sourceType": "competitor-firm",
+    "automationMode": "html",
+    "language": "en",
+    "trustTier": "competitor",
+    "timezone": "Asia/Kuala_Lumpur",
+    "isActive": true,
+    "isPublic": true,
+    "seedUrls": [
+      "https://www.yycadvisors.com/news-and-press.html"
+    ],
+    "crawlStrategy": "enterprise-html",
+    "entryUrls": [
+      "https://www.yycadvisors.com/",
+      "https://www.yycadvisors.com/news-and-press.html",
+      "https://www.yycadvisors.com/accounting-articles.html",
+      "https://www.yycadvisors.com/newsletter.html",
+      "https://www.yycadvisors.com/tax.html"
+    ],
+    "reviewMode": "automatic",
+    "dedupeKeyStrategy": "source-url-target-date",
+    "includeKeywords": [
+      "tax alert",
+      "budget commentary",
+      "thought leadership",
+      "audit methodology update",
+      "tax",
+      "accounting",
+      "advisory",
+      "e-invoice",
+      "malaysia",
+      "gst",
+      "sst",
+      "newsletter"
+    ],
+    "excludeKeywords": []
+  },
+  {
+    "slug": "anc-group-facebook",
+    "name": "ANC Group Facebook Updates",
+    "organizationName": "ANC Group",
+    "description": "Track public Facebook updates from ANC Group for tax and accounting commentary.",
+    "rootUrl": "https://www.facebook.com/share/1CT52asRHC/",
+    "category": "other",
+    "adapterType": "generic-html",
+    "sourceType": "social-channel",
+    "automationMode": "social",
+    "language": "en",
+    "trustTier": "social",
+    "timezone": "Asia/Kuala_Lumpur",
+    "isActive": true,
+    "isPublic": true,
+    "seedUrls": [
+      "https://www.facebook.com/share/1CT52asRHC/"
+    ],
+    "crawlStrategy": "enterprise-html",
+    "entryUrls": [
+      "https://www.facebook.com/share/1CT52asRHC/"
+    ],
+    "requiresBrowser": true,
+    "reviewMode": "review-only",
+    "dedupeKeyStrategy": "source-url-target-date",
+    "includeKeywords": [
+      "tax alert",
+      "budget commentary",
+      "thought leadership",
+      "audit methodology update"
+    ],
+    "excludeKeywords": []
+  },
+  {
+    "slug": "anc-group-youtube",
+    "name": "ANC Group YouTube Updates",
+    "organizationName": "ANC Group",
+    "description": "Track public YouTube videos from ANC Group relevant to tax, audit, and accounting updates.",
+    "rootUrl": "https://youtube.com/@anc-group-tv",
+    "category": "other",
+    "adapterType": "rss",
+    "sourceType": "video-channel",
+    "automationMode": "video",
+    "language": "en",
+    "trustTier": "social",
+    "timezone": "Asia/Kuala_Lumpur",
+    "isActive": true,
+    "isPublic": true,
+    "seedUrls": [
+      "https://youtube.com/@anc-group-tv"
+    ],
+    "crawlStrategy": "video-feed",
+    "entryUrls": [
+      "https://youtube.com/@anc-group-tv"
+    ],
+    "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UC7RavcFRRABxa9ZQUZxdfbw",
+    "reviewMode": "automatic",
+    "dedupeKeyStrategy": "source-url-target-date",
+    "includeKeywords": [
+      "tax alert",
+      "budget commentary",
+      "thought leadership",
+      "audit methodology update"
+    ],
+    "excludeKeywords": []
+  }
+]

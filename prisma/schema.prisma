@@ -7,333 +7,271 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// ==================== User & Auth ====================
+model EmailSubscriber {
+  id                  String    @id @default(cuid())
+  email               String    @unique
+  status              String    @default("pending")
+  locale              String    @default("en")
+  timezone            String    @default("Asia/Kuala_Lumpur")
+  preferredSendHour   Int       @default(8)
+  preferredSendMinute Int       @default(0)
+  note                String?
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+  activatedAt         DateTime?
+  bouncedAt           DateTime?
+  lastManagedAt       DateTime?
 
-model User {
+  subscriptions      SubscriberSourceSubscription[]
+  tokens             SubscriptionToken[]
+  deliveries         DigestDelivery[]
+  combinedDeliveries SubscriberDigestDelivery[]
+}
+
+model TrackedSource {
+  id                  String    @id @default(cuid())
+  slug                String    @unique
+  name                String
+  organizationName    String?
+  description         String?
+  rootUrl             String
+  category            String
+  adapterType         String
+  sourceType          String    @default("official-website")
+  automationMode      String    @default("html")
+  language            String    @default("en")
+  trustTier           String    @default("official")
+  includeKeywordsJson String?
+  excludeKeywordsJson String?
+  seedUrlsJson        String?
+  detailPatternsJson  String?
+  timezone            String    @default("Asia/Kuala_Lumpur")
+  cadence             String    @default("daily")
+  isActive            Boolean   @default(true)
+  isPublic            Boolean   @default(true)
+  lastSuccessfulRunAt DateTime?
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+
+  subscriptions           SubscriberSourceSubscription[]
+  sourceSubmissions       SourceSubmission[]
+  deliveries              DigestDelivery[]
+  combinedDeliverySources SubscriberDigestDeliverySource[]
+  updates                 SourceUpdate[]
+  runs                    SourceRun[]
+  reviewItems             SourceReviewItem[]
+
+  @@index([isActive, isPublic])
+  @@index([category, isActive])
+  @@index([sourceType, automationMode])
+}
+
+model SourceRun {
+  id              String   @id @default(cuid())
+  sourceId        String
+  targetDate      DateTime
+  adapterName     String
+  status          String
+  errorClass      String?
+  automationLevel String?
+  attemptCount    Int      @default(1)
+  durationMs      Int      @default(0)
+  candidateCount  Int      @default(0)
+  fetchedCount    Int      @default(0)
+  normalizedCount Int      @default(0)
+  insertedCount   Int      @default(0)
+  updatedCount    Int      @default(0)
+  reviewItemCount Int      @default(0)
+  notesJson       String?
+  metadataJson    String?
+  startedAt       DateTime @default(now())
+  finishedAt      DateTime @default(now())
+  createdAt       DateTime @default(now())
+
+  source TrackedSource @relation(fields: [sourceId], references: [id], onDelete: Cascade)
+
+  @@index([sourceId, targetDate])
+  @@index([status, targetDate])
+}
+
+model SourceReviewItem {
   id         String   @id @default(cuid())
-  email      String   @unique
-  name       String
-  password   String
-  role       String   @default("STAFF")
-  department String?
-  isActive   Boolean  @default(true)
+  sourceId   String
+  targetDate DateTime
+  dedupeKey  String   @unique
+  queueReason String
+  priority   String
+  summary    String
+  seedUrl    String?
+  detailsJson String?
+  status     String   @default("open")
   createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  resolvedAt DateTime?
 
-  ownedCases    Case[]          @relation("CaseOwner")
-  reviews       ReviewItem[]    @relation("Reviewer")
-  approvals     Approval[]
-  auditLogs     AuditLog[]
-  sentReminders ReminderEvent[] @relation("ReminderSender")
-  caseNotes     CaseNote[]
+  source TrackedSource @relation(fields: [sourceId], references: [id], onDelete: Cascade)
+
+  @@index([sourceId, targetDate])
+  @@index([status, createdAt])
 }
 
-// ==================== Client ====================
+model SourceUpdate {
+  id                 String   @id @default(cuid())
+  sourceId           String
+  slug               String
+  title              String
+  sourceUrl          String
+  sourceUrlHash      String
+  targetDate         DateTime
+  publishedDate      DateTime?
+  updatedDate        DateTime?
+  summary            String?
+  bodyText           String?
+  label              String    @default("Other")
+  matchedKeywordsJson String?
+  isPublic           Boolean   @default(true)
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
 
-model Client {
-  id                String    @id @default(cuid())
-  name              String
-  businessType      String?
-  registrationNo    String?
-  incorporationDate DateTime?
-  anniversaryDate   DateTime?
-  financialYearEnd  DateTime?
-  taxAgentCode      String?
-  isActive          Boolean   @default(true)
-  createdAt         DateTime  @default(now())
-  updatedAt         DateTime  @updatedAt
+  source TrackedSource @relation(fields: [sourceId], references: [id], onDelete: Cascade)
 
-  contacts    ClientContact[]
-  engagements Engagement[]
-  cases       Case[]
+  @@unique([sourceId, sourceUrlHash, targetDate])
+  @@unique([sourceId, slug])
+  @@index([sourceId, targetDate])
+  @@index([isPublic, targetDate])
 }
 
-model ClientContact {
-  id        String   @id @default(cuid())
-  clientId  String
-  client    Client   @relation(fields: [clientId], references: [id], onDelete: Cascade)
-  name      String
-  email     String?
-  phone     String?
-  whatsapp  String?
-  role      String?
-  isPrimary Boolean  @default(false)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model SubscriberSourceSubscription {
+  id             String    @id @default(cuid())
+  subscriberId   String
+  sourceId       String
+  status         String    @default("pending")
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  confirmedAt    DateTime?
+  unsubscribedAt DateTime?
+
+  subscriber EmailSubscriber     @relation(fields: [subscriberId], references: [id], onDelete: Cascade)
+  source     TrackedSource       @relation(fields: [sourceId], references: [id], onDelete: Cascade)
+  tokens     SubscriptionToken[]
+
+  @@unique([subscriberId, sourceId])
+  @@index([status])
+  @@index([sourceId, status])
 }
 
-// ==================== Engagement & Case ====================
+model SubscriptionToken {
+  id             String    @id @default(cuid())
+  token          String    @unique
+  subscriberId   String
+  subscriptionId String?
+  type           String
+  expiresAt      DateTime
+  createdAt      DateTime  @default(now())
+  consumedAt     DateTime?
 
-model Engagement {
-  id         String   @id @default(cuid())
-  clientId   String
-  client     Client   @relation(fields: [clientId], references: [id], onDelete: Cascade)
-  type       String
-  fiscalYear String?
-  startDate  DateTime?
-  endDate    DateTime?
-  status     String   @default("ACTIVE")
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  subscriber   EmailSubscriber               @relation(fields: [subscriberId], references: [id], onDelete: Cascade)
+  subscription SubscriberSourceSubscription? @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
 
-  cases Case[]
+  @@index([type, expiresAt])
+  @@index([subscriberId])
 }
 
-model Case {
-  id               String    @id @default(cuid())
-  caseNumber       String    @unique
-  clientId         String
-  client           Client    @relation(fields: [clientId], references: [id], onDelete: Cascade)
-  engagementId     String?
-  engagement       Engagement? @relation(fields: [engagementId], references: [id])
-  ownerId          String
-  owner            User      @relation("CaseOwner", fields: [ownerId], references: [id])
-  title            String
-  description      String?
-  department       String
-  caseType         String
-  status           String    @default("DRAFT")
-  priority         String    @default("NORMAL")
-  dueDate          DateTime?
-  anniversaryDate  DateTime?
-  financialYearEnd DateTime?
-
-  paymentStatus     String   @default("NOT_APPLICABLE")
-  outstandingAmount Float?
-
-  signedCopyReceived     Boolean @default(false)
-  originalSignedReceived Boolean @default(false)
-
-  blockerType String?
-  blockerNote String?
-
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
-  archivedAt DateTime?
-
-  tasks             Task[]
-  documents         Document[]
-  reminders         ReminderEvent[]
-  reviewItems       ReviewItem[]
-  approvals         Approval[]
-  notes             CaseNote[]
-  auditLogs         AuditLog[]
-  submissionPackage SubmissionPackage?
-}
-
-// ==================== Task ====================
-
-model Task {
-  id          String    @id @default(cuid())
-  caseId      String
-  case        Case      @relation(fields: [caseId], references: [id], onDelete: Cascade)
-  title       String
-  description String?
-  status      String    @default("PENDING")
-  assigneeId  String?
-  dueDate     DateTime?
-  completedAt DateTime?
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-}
-
-// ==================== Document ====================
-
-model Document {
-  id                       String    @id @default(cuid())
-  caseId                   String
-  case                     Case      @relation(fields: [caseId], references: [id], onDelete: Cascade)
-  fileName                 String
-  fileType                 String
-  filePath                 String
-  fileSize                 Int
-  category                 String?
-  status                   String    @default("RECEIVED")
-  isSensitive              Boolean   @default(false)
-  retentionPolicy          String?
-  classificationResult     String?
-  classificationConfidence Float?
-  ocrProcessed             Boolean   @default(false)
-  ocrConfidence            Float?
-  uploadedById             String?
-  createdAt                DateTime  @default(now())
-  updatedAt                DateTime  @updatedAt
-  archivedAt               DateTime?
-
-  versions        DocumentVersion[]
-  extractedFields ExtractedField[]
-  reviewItems     ReviewItem[]
-}
-
-model DocumentVersion {
-  id         String   @id @default(cuid())
-  documentId String
-  document   Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
-  version    Int
-  filePath   String
-  changedBy  String?
-  changeNote String?
-  createdAt  DateTime @default(now())
-}
-
-model ExtractedField {
-  id          String    @id @default(cuid())
-  documentId  String
-  document    Document  @relation(fields: [documentId], references: [id], onDelete: Cascade)
-  fieldName   String
-  fieldValue  String?
-  confidence  Float?
-  isConfirmed Boolean   @default(false)
-  confirmedBy String?
-  confirmedAt DateTime?
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-}
-
-// ==================== Reminder ====================
-
-model ReminderTemplate {
-  id           String   @id @default(cuid())
-  name         String
-  department   String?
-  channel      String
-  subject      String?
-  body         String
-  reminderType String
-  isActive     Boolean  @default(true)
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-
-  events ReminderEvent[]
-}
-
-model ReminderPolicy {
-  id             String   @id @default(cuid())
-  name           String
-  department     String?
-  caseType       String
-  cadence        String
-  stopConditions String?
-  escalationRules String?
-  isActive       Boolean  @default(true)
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
-}
-
-model ReminderEvent {
-  id              String    @id @default(cuid())
-  caseId          String
-  case            Case      @relation(fields: [caseId], references: [id], onDelete: Cascade)
-  templateId      String?
-  template        ReminderTemplate? @relation(fields: [templateId], references: [id])
-  channel         String
-  recipientEmail  String?
-  recipientPhone  String?
-  recipientName   String?
-  subject         String?
-  body            String?
-  reminderType    String
-  escalationLevel Int       @default(1)
-  status          String    @default("SCHEDULED")
-  scheduledAt     DateTime
-  sentAt          DateTime?
-  deliveredAt     DateTime?
-  failedAt        DateTime?
-  failureReason   String?
-  stoppedAt       DateTime?
-  stopReason      String?
-  sentById        String?
-  sentBy          User?     @relation("ReminderSender", fields: [sentById], references: [id])
-  createdAt       DateTime  @default(now())
-  updatedAt       DateTime  @updatedAt
-}
-
-// ==================== Review Queue ====================
-
-model ReviewItem {
-  id              String    @id @default(cuid())
-  caseId          String?
-  case            Case?     @relation(fields: [caseId], references: [id], onDelete: Cascade)
-  documentId      String?
-  document        Document? @relation(fields: [documentId], references: [id])
-  type            String
-  title           String
-  description     String?
-  aiOutput        String?
-  sourceRefs      String?
-  confidence      Float?
-  status          String    @default("NEW")
-  reviewerId      String?
-  reviewer        User?     @relation("Reviewer", fields: [reviewerId], references: [id])
-  editedContent   String?
-  rejectionReason String?
-  createdAt       DateTime  @default(now())
-  updatedAt       DateTime  @updatedAt
-  resolvedAt      DateTime?
-}
-
-// ==================== Approval ====================
-
-model Approval {
-  id         String   @id @default(cuid())
-  caseId     String?
-  case       Case?    @relation(fields: [caseId], references: [id], onDelete: Cascade)
-  userId     String
-  user       User     @relation(fields: [userId], references: [id])
-  action     String
-  note       String?
-  targetType String
-  targetId   String
-  createdAt  DateTime @default(now())
-}
-
-// ==================== Submission Package ====================
-
-model SubmissionPackage {
+model DigestDelivery {
   id            String    @id @default(cuid())
-  caseId        String    @unique
-  case          Case      @relation(fields: [caseId], references: [id], onDelete: Cascade)
-  type          String
-  status        String    @default("NOT_READY")
-  checklist     String?
-  documents     String?
-  readinessNote String?
-  submittedAt   DateTime?
-  submittedBy   String?
+  sourceId      String
+  subscriberId  String
+  targetDate    DateTime
+  status        String    @default("scheduled")
+  subject       String
+  emailId       String?
+  itemCount     Int       @default(0)
+  summary       String?
+  failureReason String?
+  retryCount    Int       @default(0)
+  sentAt        DateTime?
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
+
+  source     TrackedSource   @relation(fields: [sourceId], references: [id], onDelete: Cascade)
+  subscriber EmailSubscriber @relation(fields: [subscriberId], references: [id], onDelete: Cascade)
+
+  @@unique([sourceId, subscriberId, targetDate])
+  @@index([status, targetDate])
+  @@index([sourceId, targetDate])
 }
 
-// ==================== Case Note ====================
+model SubscriberDigestDelivery {
+  id            String    @id @default(cuid())
+  subscriberId  String
+  targetDate    DateTime
+  scheduledFor  DateTime
+  status        String    @default("scheduled")
+  subject       String
+  emailId       String?
+  itemCount     Int       @default(0)
+  summary       String?
+  failureReason String?
+  retryCount    Int       @default(0)
+  retryAfter    DateTime?
+  sentAt        DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
 
-model CaseNote {
-  id        String   @id @default(cuid())
-  caseId    String
-  case      Case     @relation(fields: [caseId], references: [id], onDelete: Cascade)
-  authorId  String?
-  author    User?    @relation(fields: [authorId], references: [id])
-  content   String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  subscriber EmailSubscriber                  @relation(fields: [subscriberId], references: [id], onDelete: Cascade)
+  sources    SubscriberDigestDeliverySource[]
+
+  @@unique([subscriberId, targetDate])
+  @@index([status, scheduledFor])
+  @@index([targetDate, status])
 }
 
-// ==================== Audit Log ====================
-
-model AuditLog {
+model SubscriberDigestDeliverySource {
   id         String   @id @default(cuid())
-  userId     String?
-  user       User?    @relation(fields: [userId], references: [id])
-  caseId     String?
-  case       Case?    @relation(fields: [caseId], references: [id])
-  action     String
-  entityType String
-  entityId   String?
-  details    String?
-  ipAddress  String?
+  deliveryId String
+  sourceId   String
+  itemCount  Int      @default(0)
   createdAt  DateTime @default(now())
 
-  @@index([userId])
-  @@index([caseId])
-  @@index([action])
-  @@index([createdAt])
+  delivery SubscriberDigestDelivery @relation(fields: [deliveryId], references: [id], onDelete: Cascade)
+  source   TrackedSource            @relation(fields: [sourceId], references: [id], onDelete: Cascade)
+
+  @@unique([deliveryId, sourceId])
+  @@index([sourceId])
+}
+
+model SourceSubmission {
+  id                String    @id @default(cuid())
+  siteName          String
+  siteUrl           String
+  description       String
+  contactEmail      String?
+  requestedCategory String?
+  status            String    @default("new")
+  reviewNotes       String?
+  reviewedBy        String?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  reviewedAt        DateTime?
+  trackedSourceId   String?
+
+  trackedSource TrackedSource? @relation(fields: [trackedSourceId], references: [id], onDelete: SetNull)
+
+  @@index([status, createdAt])
+  @@index([siteUrl])
+}
+
+model FeedbackSubmission {
+  id         String    @id @default(cuid())
+  type       String    @default("general")
+  message    String
+  email      String?
+  page       String?
+  status     String    @default("new")
+  adminNotes String?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  resolvedAt DateTime?
+
+  @@index([status, createdAt])
+  @@index([type, createdAt])
 }
